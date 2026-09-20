@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>115南投國中親師手冊</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .smooth-scroll { scroll-behavior: smooth; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .accordion-content { transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out; max-height: 0; opacity: 0; overflow: hidden; }
+        .accordion-content.open { max-height: 5000px; opacity: 1; }
+        .nav-link.active { background-color: #EFF6FF; color: #1D4ED8; border-right: 4px solid #1D4ED8; font-weight: 700; }
+        
+        /* Custom Table Styling */
+        .ntjh-table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+        .ntjh-table th, .ntjh-table td { border: 1px solid #e5e7eb; padding: 0.75rem; text-align: left; }
+        .ntjh-table th { background-color: #f3f4f6; font-weight: 700; }
+        .ntjh-table tr:nth-child(even) { background-color: #f9fafb; }
+    </style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden text-gray-800">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden fixed top-0 w-full bg-blue-800 text-white z-50 flex justify-between items-center p-4 shadow-md">
+        <div class="font-bold text-lg truncate"><i class="fa-solid fa-school mr-2"></i>南投國中親師手冊</div>
+        <button id="mobile-menu-btn" class="text-2xl focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden" onclick="toggleMobileMenu()"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="bg-white w-64 h-full flex flex-col shadow-xl absolute md:relative z-50 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out pt-16 md:pt-0">
+        <div class="p-6 bg-blue-800 text-white hidden md:block">
+            <h1 class="text-2xl font-black tracking-wider"><i class="fa-solid fa-school mr-2"></i>投中</h1>
+            <p class="text-sm mt-1 text-blue-200">115學年度 全校親師座談會</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4 hide-scrollbar">
+            <ul class="space-y-1">
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors active" data-target="tab-home" onclick="switchTab('tab-home')"><i class="fa-solid fa-house w-6 text-center mr-2"></i> 首頁資訊</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-1" onclick="switchTab('tab-1')"><i class="fa-solid fa-clock w-6 text-center mr-2"></i> 1. 程序表</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-2" onclick="switchTab('tab-2')"><i class="fa-solid fa-chalkboard-user w-6 text-center mr-2"></i> 2. 班級導師名單</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-3" onclick="switchTab('tab-3')"><i class="fa-solid fa-map-location-dot w-6 text-center mr-2"></i> 3. 校區配置圖</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-4" onclick="switchTab('tab-4')"><i class="fa-solid fa-microphone w-6 text-center mr-2"></i> 4. 校長報告</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-5" onclick="switchTab('tab-5')"><i class="fa-solid fa-book-open w-6 text-center mr-2"></i> 5. 教務處報告</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-6" onclick="switchTab('tab-6')"><i class="fa-solid fa-users w-6 text-center mr-2"></i> 6. 學務處報告</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-7" onclick="switchTab('tab-7')"><i class="fa-solid fa-heart w-6 text-center mr-2"></i> 7. 輔導室報告</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-8" onclick="switchTab('tab-8')"><i class="fa-solid fa-building w-6 text-center mr-2"></i> 8. 總務處報告</button></li>
+                <li><button class="nav-link w-full text-left px-6 py-3 text-gray-600 hover:bg-gray-50 transition-colors" data-target="tab-9" onclick="switchTab('tab-9')"><i class="fa-solid fa-newspaper w-6 text-center mr-2"></i> 9. 親職教育佳文</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1 h-full overflow-y-auto bg-gray-50 pt-16 md:pt-0 smooth-scroll p-4 md:p-8">
+        
+        <!-- Tab: Home -->
+        <section id="tab-home" class="tab-content max-w-4xl mx-auto block">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center mt-10">
+                <div class="inline-block p-4 bg-blue-50 rounded-full text-blue-600 mb-6">
+                    <i class="fa-solid fa-school text-5xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">南投縣立南投國民中學</h2>
+                <p class="text-gray-500 mb-8 font-serif">Nantou Junior High School</p>
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-xl p-8 shadow-lg inline-block text-left mx-auto">
+                    <h3 class="text-2xl font-bold mb-4 border-b border-blue-400 pb-2">115學年度 全校親師座談會</h3>
+                    <ul class="space-y-3 text-lg">
+                        <li><i class="fa-regular fa-calendar-days w-6"></i> <strong>時間：</strong>115年9月19日(六) 早上8:30-11:30</li>
+                        <li><i class="fa-solid fa-location-dot w-6"></i> <strong>地點：</strong>南投國中學生活動中心 及各班教室</li>
+                    </ul>
+                </div>
+                <p class="text-gray-500 mt-8 text-sm bg-gray-100 p-3 rounded-lg inline-block">
+                    <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> 請點選左側或上方選單以切換閱讀各項報告與資訊。
+                </p>
+            </div>
+        </section>
+
+        <!-- Tab 1: 程序表 -->
+        <section id="tab-1" class="tab-content max-w-4xl mx-auto hidden animate-fade-in">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-clock mr-2"></i>115學年度第一學期全校親師座談會程序表</h2>
+                <p class="text-gray-600 mb-4"><i class="fa-solid fa-calendar-check text-green-500 mr-2"></i>日期：115年9月19日(六)</p>
+                
+                <div class="overflow-x-auto">
+                    <table class="ntjh-table">
+                        <thead>
+                            <tr>
+                                <th class="w-1/6">時間</th>
+                                <th class="w-1/4">活動內容</th>
+                                <th class="w-5/12">說明</th>
+                                <th class="w-1/6">地點</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>08:10-08:30</td>
+                                <td>家長報到</td>
+                                <td>1. 請家長於活動中心門口領取手冊資料，並參與<br>2. 10:30分再到孩子的班上簽到</td>
+                                <td>活動中心</td>
+                            </tr>
+                            <tr>
+                                <td>08:30-09:10</td>
+                                <td>校長致詞、學校行政團隊及導師介紹、家長會長致詞、各處室主任報告<br>網路資訊安全宣導<br>12年國教適性入學宣導</td>
+                                <td>1. 劉校長松彥致歡迎詞、學校行政團隊及導師介紹<br>2. 王會長錦澔致歡迎詞<br>3. 各處室主任報告</td>
+                                <td>活動中心</td>
+                            </tr>
+                            <tr>
+                                <td>09:10-09:20</td>
+                                <td></td>
+                                <td>資訊組長 楊宗賢組長</td>
+                                <td>活動中心</td>
+                            </tr>
+                            <tr>
+                                <td>09:20-10:20</td>
+                                <td></td>
+                                <td>講題：中投區12年國教適性入學宣導<br>講師：林佩君候用校長</td>
+                                <td>活動中心</td>
+                            </tr>
+                            <tr>
+                                <td>10:20-10:30</td>
+                                <td>書香藝廊</td>
+                                <td>歡迎各位家長蒞臨本校圖書館 (社區共讀站)參觀</td>
+                                <td>圖書館</td>
+                            </tr>
+                            <tr>
+                                <td>10:30-11:30<br>11:30-11:40</td>
+                                <td>各班級親師座談會<br>導師會報</td>
+                                <td>請家長至各班教室，請導師主持座談會<br>請各班導師到第一會議室開導師會報</td>
+                                <td>各班教室<br>第一會議室</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: 班級導師名單 -->
+        <section id="tab-2" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-chalkboard-user mr-2"></i>115學年度班級導師名單</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 一年級 -->
+                    <div class="bg-blue-50 rounded-xl p-4">
+                        <h3 class="text-xl font-bold text-blue-800 mb-3 text-center border-b border-blue-200 pb-2">一年級</h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>101導師</span> <span class="font-bold text-gray-800">黃琇琴</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>102導師</span> <span class="font-bold text-gray-800">劉珈妤</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>103導師</span> <span class="font-bold text-gray-800">許瓊芳</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>104導師</span> <span class="font-bold text-gray-800">林美貞</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>105導師</span> <span class="font-bold text-gray-800">張君端</span></li>
+                            <li class="flex justify-between border-b border-blue-100 pb-1"><span>106導師</span> <span class="font-bold text-gray-800">邱小萍</span></li>
+                            <li class="flex justify-between pb-1"><span>107導師</span> <span class="font-bold text-gray-800">黃全帆</span></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 二年級 -->
+                    <div class="bg-green-50 rounded-xl p-4">
+                        <h3 class="text-xl font-bold text-green-800 mb-3 text-center border-b border-green-200 pb-2">二年級</h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>201導師</span> <span class="font-bold text-gray-800">黃麗月</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>202導師</span> <span class="font-bold text-gray-800">黃惠君</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>203導師</span> <span class="font-bold text-gray-800">林宜玟</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>204導師</span> <span class="font-bold text-gray-800">李佩儒</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>205導師</span> <span class="font-bold text-gray-800">林富銓</span></li>
+                            <li class="flex justify-between border-b border-green-100 pb-1"><span>206導師</span> <span class="font-bold text-gray-800">許招玉</span></li>
+                            <li class="flex justify-between pb-1"><span>207導師</span> <span class="font-bold text-gray-800">黃瓊慧</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 三年級 -->
+                    <div class="bg-purple-50 rounded-xl p-4">
+                        <h3 class="text-xl font-bold text-purple-800 mb-3 text-center border-b border-purple-200 pb-2">三年級</h3>
+                        <ul class="space-y-2">
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>301導師</span> <span class="font-bold text-gray-800">吳庭萱</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>302導師</span> <span class="font-bold text-gray-800">黃瓊英</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>303導師</span> <span class="font-bold text-gray-800">陳秉綸</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>304導師</span> <span class="font-bold text-gray-800">蔡依秀</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>305導師</span> <span class="font-bold text-gray-800">施惠婷</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>306導師</span> <span class="font-bold text-gray-800">石鋕洋</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>307導師</span> <span class="font-bold text-gray-800">孫雅惠</span></li>
+                            <li class="flex justify-between border-b border-purple-100 pb-1"><span>308導師</span> <span class="font-bold text-gray-800">李維嘉</span></li>
+                            <li class="flex justify-between pb-1"><span>309導師</span> <span class="font-bold text-gray-800">黃珮姿</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: 校區配置圖 -->
+        <section id="tab-3" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-map-location-dot mr-2"></i>南投國中校區與停車配置 (文字指引)</h2>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-gray-700">
+                    <p class="mb-2"><strong>停車指引：</strong></p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li><strong>活動中心四周圍：</strong>可以停車。</li>
+                        <li><strong>文林路收費停車場：</strong>可多加利用。</li>
+                        <li><strong>祖祠路：</strong>道路狹窄，<strong class="text-red-600">請勿停車</strong>。</li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 text-gray-700 mb-6">
+                    <p class="mb-2"><strong>防疫與環保提醒：</strong></p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li>親師座談當天，校園內人潮聚集，建議各位家長<strong>佩戴口罩</strong>，保護自己，也保護他人。</li>
+                        <li>因自主防疫考量與響應環保，學校有飲水機提供飲用水，請各位家長<strong>自備飲用杯</strong>，歡迎取用，減少接觸需求，感謝您的配合。</li>
+                    </ul>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold text-lg mb-2 text-indigo-800">專科教室大樓</h4>
+                        <ul class="space-y-1 text-gray-600">
+                            <li>1F: 101~103, 導師室, 廁所, 茶水間</li>
+                            <li>2F: 104~106, 導師室, 廁所, 茶水間</li>
+                            <li>3F: 廁所, 茶水間</li>
+                        </ul>
+                    </div>
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold text-lg mb-2 text-indigo-800">圖書館大樓</h4>
+                        <ul class="space-y-1 text-gray-600">
+                            <li>1F: 201~203, 教務處, 總務處, 油印室</li>
+                            <li>2F: 204~206, 教材準備室, 輔導室</li>
+                            <li>3F: 合作社</li>
+                        </ul>
+                    </div>
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold text-lg mb-2 text-indigo-800">行政與一般教室大樓</h4>
+                        <ul class="space-y-1 text-gray-600">
+                            <li>1F: 301~303, 校長室, 第一會議室</li>
+                            <li>2F: 304~306, 學務處</li>
+                            <li>3F: 307, 308</li>
+                        </ul>
+                    </div>
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold text-lg mb-2 text-indigo-800">周邊區域</h4>
+                        <ul class="space-y-1 text-gray-600">
+                            <li>學生活動中心 (親師座談會場)</li>
+                            <li>南投縣輔諮中心</li>
+                            <li>第二會議室、健康中心 (1F)</li>
+                            <li>守衛室 (正門口)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: 校長報告 -->
+        <section id="tab-4" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-10 text-gray-700 leading-relaxed text-lg">
+                <h2 class="text-3xl font-bold text-center text-blue-900 mb-8 pb-4 border-b">校長報告</h2>
+                
+                <p class="mb-4">尊敬的各位家長、各位老師，大家好：</p>
+                <p class="mb-4 indent-8">首先，感謝各位家長在百忙之中撥冗參加今天的親師座談會。您的到來，不僅代表對孩子教育的重視，更展現了家庭與學校共同陪伴孩子成長的用心。在此，我謹代表學校全體師生，向各位家長表達最誠摯的歡迎與感謝。</p>
+                
+                <p class="mb-4 indent-8">教育的目的不只是追求學業成績，更重要的是培養孩子成為具有良好品格與健全人格的人。因此，本校一直以「品格教育」作為學校發展的重要核心。我們深信，知識可以豐富人生，而品格則決定人生的高度。唯有具備良好品格的孩子，才能在人生的道路上穩健前行，迎接各種挑戰。</p>
+                
+                <p class="mb-4 indent-8">在品格教育的推動上，我們特別重視四項核心價值，那就是<strong>「認真、負責、善良、尊重與自信」</strong>。</p>
+                
+                <ul class="list-none space-y-4 mb-6">
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-blue-700 text-xl block mb-2">一、認真</strong>
+                        <p>求學的過程就像種植一棵樹，需要時間灌溉與耐心照顧。學生或許天賦不同，但只要願意認真學習、專心投入，就能逐步累積實力。認真的態度不僅展現在課業上，也表現在生活中的每一件小事。完成作業、遵守規範、積極參與活動，都是認真態度的具體表現。我們希望孩子能養成腳踏實地、持續努力的習慣，因為成功從來不是偶然，而是長期認真的結果。</p>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-blue-700 text-xl block mb-2">二、負責</strong>
+                        <p>責任感是一個人成熟的重要標誌。學生要對自己的學習負責，對自己的行為負責，也要對團體和家庭負責。當孩子能勇於承擔責任，遇到錯誤願意面對與改進，而不是逃避或推卸，他便能從挫折中學習成長。學校將透過各項課程與活動，培養學生自主管理的能力，讓他們學會為自己的選擇負責。</p>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-blue-700 text-xl block mb-2">三、善良</strong>
+                        <p>善良是品格教育中最溫暖的力量。在競爭激烈的社會裡，我們更希望孩子保有一顆關懷他人、樂於助人的心。當同學需要協助時願意伸出援手；當面對不同背景、不同能力的人時，能夠展現同理與包容。善良不只是美德，更是一種影響社會的正向力量。相信一個懂得感恩、懂得關懷別人的孩子，未來也必定能成為社會上溫暖而有價值的人。</p>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="text-blue-700 text-xl block mb-2">四、尊重與自信</strong>
+                        <p>尊重是人與人相處的基礎。我們教導孩子尊重師長、尊重同學、尊重不同意見，也尊重各種生命與環境。學會尊重，才能建立良好的人際關係，營造和諧的校園文化。同時，我們也非常重視培養學生的自信心。每個孩子都有自己的優勢與潛能，透過學習與鼓勵，我們希望他們能肯定自己、相信自己，勇敢面對挑戰。真正的自信並非自滿，而是在了解自己之後，願意不斷進步與成長。</p>
+                    </li>
+                </ul>
+
+                <p class="mb-4 indent-8">各位家長，教育是一項需要攜手合作的工程。孩子每天在學校接受教育，也在家庭中學習做人處事的態度。學校與家庭如同孩子成長路上的兩隻翅膀，缺一不可。我們期待家長能與學校保持良好的聯繫與溝通，共同關心孩子的學習狀況、生活習慣以及品格發展。當家長與老師目標一致、方向相同，孩子將獲得最完整且最有力量的支持。</p>
+                <p class="mb-4 indent-8">面對快速變遷的時代，未來需要的不只是會考試的人才，更是具有責任感、同理心、合作能力與良好品格的公民。因此，本校將持續深化品格教育，引導學生培養認真負責的求學態度，展現善良溫暖的品德，學會尊重他人與肯定自我，成為一位有能力、更有品格的人。</p>
+                <p class="mb-8 indent-8">最後，再次感謝各位家長對學校的支持與信任。讓我們共同攜手，陪伴孩子快樂學習、健康成長，為他們打造充滿希望與未來的人生道路。</p>
+                
+                <div class="text-right">
+                    <p>敬祝各位家長 身體健康、闔家平安！親師合作愉快！</p>
+                    <p class="font-bold text-xl mt-4">校長 劉松彥 敬上</p>
+                    <p class="text-gray-500 text-sm mt-1">115.09.19</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 5: 教務處報告 -->
+        <section id="tab-5" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-book-open mr-2"></i>教務處工作報告</h2>
+                
+                <div class="mb-6 bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                    <ol class="list-decimal ml-5 space-y-2 text-gray-800">
+                        <li>請三年級家長多留意學生課業狀態，明年5月國中教育會考。</li>
+                        <li>本校近期將調查8年級假日深耕班、7年級假日班、9年級晚自習。</li>
+                        <li>本校近期針對7.8.9年級開設學習扶助班，給予相關學生學業上的加強。</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- 教學組 -->
+                    <div>
+                        <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">教學組</h3>
+                        <p class="mb-3 text-gray-700">1. 本校同學參加115年南投縣國語文第二區區賽，獲得優異成績，晉級同學將代表學校參加9/17在埔里國小舉行的縣賽，感謝各位參賽同學的努力與指導老師的付出。</p>
+                        
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4 text-center">
+                            <h4 class="font-bold text-lg text-red-600 mb-2">恭賀 115南投縣國語文區賽 優異成績</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-lg mx-auto text-gray-800">
+                                <div><span class="font-bold">202 張芮瑄</span> 國語演說第一名<br><span class="text-sm text-gray-600">指導老師: 蔡依秀老師</span></div>
+                                <div><span class="font-bold">202 陳怡潔</span> 國語朗讀第二名<br><span class="text-sm text-gray-600">指導老師: 鄭淑芬老師</span></div>
+                                <div><span class="font-bold">107 張羽瑄</span> 國語寫字第二名<br><span class="text-sm text-gray-600">指導老師: 張宗欽老師</span></div>
+                                <div><span class="font-bold">202 楊昀心</span> 國語作文第三名<br><span class="text-sm text-gray-600">指導老師: 張可欣老師</span></div>
+                            </div>
+                        </div>
+
+                        <p class="mb-3 text-gray-700">2. 本校為鼓勵同學學習英語，增加英語能力，凡通過全民英檢的同學，學校會加以鼓勵記功，而家長會更會有獎金鼓勵，目前通過的同學名單如下：</p>
+                        <table class="ntjh-table mb-2 max-w-md">
+                            <thead><tr><th>班級</th><th>姓名</th><th>類別</th></tr></thead>
+                            <tbody>
+                                <tr><td>202</td><td>楊竣翔</td><td>初級通過</td></tr>
+                                <tr><td>207</td><td>黃援浠</td><td>初級通過</td></tr>
+                            </tbody>
+                        </table>
+                        <p class="text-sm text-gray-500">恭喜以上同學，並期待其他的同學一同加入。</p>
+                    </div>
+
+                    <!-- 註冊組 -->
+                    <div>
+                        <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">註冊組</h3>
+                        <ol class="list-decimal ml-5 space-y-3 text-gray-700">
+                            <li>
+                                <strong>畢業標準規定：</strong>依據南投縣國民中小學學生成績評量補充規定，修業期滿符合以下規定者發給畢業證書：
+                                <ul class="list-disc ml-5 mt-1 text-sm text-gray-600 space-y-1">
+                                    <li>學習期間扣除學校核可之公、喪、病假，上課總出席率至少達三分之二以上，且經獎懲抵銷後，未滿三大過。</li>
+                                    <li>八大學習領域有四大學習領域以上，其各學習領域之畢業總平均成績，均達丙等以上。</li>
+                                </ul>
+                            </li>
+                            <li>
+                                <strong>免試超額比序：</strong>因應12年國教免試超額比序項目中多元學習表現中均衡學習積分若健體、藝文、綜合、科技四領域五學期平均成績達60分(含)以上者，任一領域符合者得3分；4領域皆符合者得12分。
+                            </li>
+                            <li>
+                                <strong>補考規定：</strong>學生各學期各學習領域之成績未達及格基準者(丙等/60分)，均得予補考。各領域補考出題以習作或題庫為主，題庫會事先公告。
+                                <ul class="list-disc ml-5 mt-1 text-sm text-gray-600 space-y-1">
+                                    <li>補考科目：國文、英語、數學、社會及自然與生活科技。(健體、綜合、藝文、生活科技因涉及升學比序不得補考)</li>
+                                    <li>七、八、九年級八大領域需四大領域及格才符合畢業成績要求，請家長多留意。</li>
+                                </ul>
+                            </li>
+                            <li>9/19(六)在活動中心舉行中投區12年國教適性入學宣導，邀請家長們踴躍參與了解詳情。</li>
+                            <li>國中教育會考日期：115年5月15、16日(星期六、日)。</li>
+                        </ol>
+                    </div>
+
+                    <!-- 課發組 & 設備組 & 資訊組 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">課發組</h3>
+                            <ul class="list-disc ml-5 space-y-2 text-gray-700 text-sm">
+                                <li>「學習扶助」課程已完成開班規劃，利用早自習時段上課，加強國文、數學及英語基礎能力。請同學依課表準時參加，無故未到將通報導師。</li>
+                                <li>115學年部分工時外籍英語教學助理計畫(ELTA Program)持續推行，營造校園英語口說環境。</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">設備組</h3>
+                            <ul class="list-disc ml-5 space-y-2 text-gray-700 text-sm">
+                                <li>校內科展報名預計10月初開始，11/5截止。</li>
+                                <li>圖書館圖書小志工招募中；學生借閱上限15本，借閱4週。</li>
+                                <li>感謝黃偉訓老師愛閱基金每月捐贈新書。</li>
+                                <li>週四早自習7:30~8:00為晨讀時間(段考前兩週暫停)。</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 資訊組 -->
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4 inline-block"><i class="fa-solid fa-desktop mr-2"></i>資訊組 - 網路安全與平台</h3>
+                        <p class="text-gray-700 mb-3 text-sm">本校康軒雲學校教學平台師生帳密皆已建置，學生可自主練習看影片或試題(校網自主學習專區)。<br>登入密碼：生日四碼 + 身分證末四碼。</p>
+                        
+                        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-red-200">
+                                <h4 class="font-bold text-red-600 mb-2">網路安全「三不」</h4>
+                                <ul class="list-disc ml-5 text-sm space-y-1 text-gray-700">
+                                    <li>來歷不明網址<strong class="text-red-500">不</strong>點入</li>
+                                    <li>不信任的軟體<strong class="text-red-500">不</strong>下載</li>
+                                    <li>網路資訊<strong class="text-red-500">不</strong>要太相信</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-green-200">
+                                <h4 class="font-bold text-green-600 mb-2">網路安全「三要」</h4>
+                                <ul class="list-disc ml-5 text-sm space-y-1 text-gray-700">
+                                    <li>重要的資料<strong class="text-green-600">要</strong>備份</li>
+                                    <li>系統及防毒<strong class="text-green-600">要</strong>更新</li>
+                                    <li>網路資訊<strong class="text-green-600">要</strong>停看聽</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 6: 學務處報告 -->
+        <section id="tab-6" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-users mr-2"></i>學務處工作報告</h2>
+                
+                <!-- 訓育與體育 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div>
+                        <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">訓育組</h3>
+                        <ul class="list-disc ml-5 space-y-2 text-gray-700 text-sm">
+                            <li>三年級戶外教育預定於115年10月21~23日舉辦 (南部)。</li>
+                            <li>二年級戶外教育預定於115年10月27~28日舉辦 (尖山埤)。</li>
+                            <li>一年級校外教學預定於116年3、4月份辦理。</li>
+                            <li><strong>本學期社團：</strong>程式設計、匹克球、羽球、拔河、桌球、自媒體創意、桌遊團康、舞蹈、柔道、魔術氣球等。</li>
+                            <li><strong>校隊：</strong>國樂團、口琴隊。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">體育組</h3>
+                        <ul class="list-disc ml-5 space-y-2 text-gray-700 text-sm">
+                            <li><strong>代表隊表現：</strong><br>
+                                田徑：縣運田賽國女組冠軍/徑賽亞軍。<br>
+                                羽球：縣運國女團體第一名。<br>
+                                桌球：中小學聯運國男團體冠軍。
+                            </li>
+                            <li>本校已爭取桌球、田徑基層訓練站設站。</li>
+                            <li>體育班奉准招收田徑、桌球、羽球三項。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 衛生組 & 健康中心 -->
+                <div class="mb-8 border border-gray-200 rounded-xl overflow-hidden">
+                    <h3 class="text-xl font-bold bg-green-100 text-green-800 py-3 px-5 m-0"><i class="fa-solid fa-heart-pulse mr-2"></i>衛生組與健康中心</h3>
+                    <div class="p-5 text-sm text-gray-700 space-y-3 bg-gray-50">
+                        <p><strong>環保：</strong>請自備水壺。本校備有廢電池回收與舊制服回收機制。</p>
+                        <p><strong>傳染病防治：</strong>加強宣導登革熱防治(落實「巡、倒、清、刷」)。流感、腸病毒流行期間，請落實「生病不上學」。</p>
+                        <p><strong>健康檢查與疫苗：</strong>
+                            <ul class="list-disc ml-5 text-gray-600 mt-1">
+                                <li>115/09/30：國二HPV公費疫苗接種。</li>
+                                <li>115/10/16：流感疫苗施打(線上同意書簽署)。</li>
+                                <li>115/11/12：新生體檢。</li>
+                            </ul>
+                        </p>
+                        <p><strong>學生保險：</strong>由國泰人壽承作，醫療給付採實支實付，自負額需高於500元。</p>
+                        <p><strong>生理用品定點取用：</strong>置放於健康中心、衛生組、輔導組，急需可至定點取用。</p>
+                    </div>
+                </div>
+                
+                <!-- 午餐秘書 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">午餐秘書</h3>
+                    <p class="text-sm text-gray-700 mb-2">學校午餐供應四菜一飯一湯。115學年度由「玖玖」及「豐成」兩家廠商按月輪流供餐。</p>
+                    <p class="text-sm text-gray-700 mb-2">提供「南投縣好食卷」及「安得烈膳糧食物箱」救急措施，有需求學生可向午秘申請。</p>
+                </div>
+
+                <!-- 生教組 (交通/生活/防制) -->
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold bg-blue-100 text-blue-800 py-2 px-4 rounded-lg mb-4 inline-block">生教組</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700 mb-4">
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-blue-700 mb-2"><i class="fa-solid fa-car mr-2"></i>交通安全篇</h4>
+                            <p class="mb-2"><strong>汽車接送：</strong>請多利用文林路停車場及文林路兩側。請由南中門進入。<strong class="text-red-500">祖祠路兩側及校門口請勿停車。</strong></p>
+                            <p class="mb-2"><strong>機車接送：</strong>建議由興和巷接送，在南側門空曠處迴轉，避免與汽車爭道。</p>
+                            <p>騎乘自行車請務必戴安全帽並上鎖。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border">
+                            <h4 class="font-bold text-blue-700 mb-2"><i class="fa-solid fa-user-shield mr-2"></i>生活管理與防制</h4>
+                            <ul class="list-disc ml-5 space-y-1">
+                                <li><strong>手機：</strong>依學校規定申請使用。</li>
+                                <li><strong>服儀：</strong>以乾淨整齊為原則，依規定穿著制服/體育服。</li>
+                                <li><strong>無菸校園：</strong>菸害防制法新規定全面禁止電子煙，加重罰責，未滿18歲吸菸需接受戒菸教育。</li>
+                                <li><strong>反霸凌專線：</strong>投中 049-2237677 / 教育部 1953。霸凌行為恐觸犯刑法、民法。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                        <h4 class="font-bold text-red-600 mb-2"><i class="fa-solid fa-triangle-exclamation mr-2"></i>反詐騙與反毒宣導</h4>
+                        <p class="font-bold mb-1">防制詐騙三步驟(遇綁架電話)：一聽、二掛、三查(撥165/110或學校)</p>
+                        <p class="font-bold mb-3">網路防詐4口訣：識、設、查、報</p>
+                        <p class="mb-1 text-gray-800"><strong>反毒注意：</strong>新興毒品如「依託咪酯」(喪屍煙彈)已升級為一級毒品。若發現孩子有眼眶泛黑、老是打瞌睡、情緒焦慮不安等初期症狀，請多加留意交友狀況，必要時學校將啟動春暉小組輔導。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 7: 輔導室報告 -->
+        <section id="tab-7" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-heart mr-2"></i>輔導室工作報告</h2>
+                
+                <ol class="list-decimal ml-5 space-y-4 text-gray-700 text-lg leading-relaxed">
+                    <li>在國中三年的學習過程中，教育部提供每位學生一本「國中學生生涯發展紀錄手冊」，內容包含心理測驗與各項表現。畢業前會發還，請家長與孩子討論，找到適合的發展方向。</li>
+                    <li>本學期繼續辦理一年級「得勝者問題解決」課程，融入輔導活動中，由得勝者協會志工老師任教，培養情緒管理與解決問題能力。</li>
+                    <li>本學期三年級技藝課程(電機、餐旅、食品、家政等)已於9月開課。</li>
+                    <li><strong class="text-green-600">佳績報告：</strong>114學年度南投縣技藝競賽，本校餐旅及食品職群選手表現優異，得獎率達71%！高中職技優甄審及實用技能班亦有多位同學錄取台中高工、南投高商及興大附農等校。</li>
+                    <li>學生在和樂溫馨的家庭環境下成長是我們的期望，若發現不幸學生(如家暴)，請通報輔導室及學務處。</li>
+                    <li>本校美術班與資源班穩定經營，提供適性學習機會。</li>
+                </ol>
+
+                <div class="mt-8 bg-blue-50 p-5 rounded-xl border border-blue-100">
+                    <h3 class="font-bold text-blue-900 mb-3 text-xl">輔導室團隊聯絡資訊</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-700">
+                        <div><i class="fa-solid fa-phone mr-2 text-blue-500"></i>代表號：2222549</div>
+                        <div><i class="fa-solid fa-user-tie mr-2 text-blue-500"></i>輔導主任 (蔡惠玲)：分機 215</div>
+                        <div><i class="fa-solid fa-user-group mr-2 text-blue-500"></i>輔導組長 (周學琪)：分機 115</div>
+                        <div><i class="fa-solid fa-folder-open mr-2 text-blue-500"></i>資料組長 (林高全)：分機 253</div>
+                        <div><i class="fa-solid fa-hands-holding-child mr-2 text-blue-500"></i>特教組長 (胡乃韻)：分機 254</div>
+                        <div><i class="fa-solid fa-chalkboard-user mr-2 text-blue-500"></i>特教資源班：分機 235</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 8: 總務處報告 -->
+        <section id="tab-8" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-building mr-2"></i>總務處報告</h2>
+                
+                <h3 class="text-xl font-bold text-gray-800 mb-3">一、學校電話分機表 (代表號: 2222549)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm mb-6 bg-gray-50 p-4 rounded-lg border">
+                    <div>校長室: 111</div> <div>教務處: 112</div> <div>學務處: 113</div> <div>總務處: 116</div>
+                    <div>輔導室: 115</div> <div>會計室: 225</div> <div>人事室: 223</div> <div>警衛室: 117</div>
+                    <div>健康中心: 236</div>
+                </div>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-3">二、導師辦公室分機表</h3>
+                <table class="ntjh-table text-sm mb-6 max-w-2xl">
+                    <thead><tr><th>辦公室</th><th>分機</th><th>負責班級</th></tr></thead>
+                    <tbody>
+                        <tr><td>B1(二導)</td><td>264</td><td>201-203</td></tr>
+                        <tr><td>B2(二導)</td><td>265</td><td>204-206</td></tr>
+                        <tr><td>D1(一導)</td><td>274</td><td>101-103</td></tr>
+                        <tr><td>D2(一導)</td><td>275</td><td>104-106</td></tr>
+                        <tr><td>C1(美術班)</td><td>271</td><td>107, 207, 309</td></tr>
+                        <tr><td>A1(三導)</td><td>261</td><td>301-303</td></tr>
+                        <tr><td>A2(三導)</td><td>262</td><td>304-306</td></tr>
+                        <tr><td>A3(三導)</td><td>263</td><td>307-308</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="text-xl font-bold text-gray-800 mb-3">三、重要事項宣導</h3>
+                <ul class="list-disc ml-5 space-y-3 text-gray-700">
+                    <li>學校大門口已加裝對講機，無守衛時家長可直接撥分機聯絡。</li>
+                    <li><strong>家長會：</strong>期盼家長踴躍加入家長會，成為溝通橋樑。10/15(四) 18:30 召開委員大會。</li>
+                    <li><strong>冷氣使用：</strong>教育部補助冷氣時間為5、6、9、10月正常上課時間。10月底將收回遙控器。</li>
+                    <li><strong>課桌椅：</strong>學生桌椅屬公物，畢業需原狀交回。若有人為損壞需自付修繕費，建議自備桌墊。</li>
+                    <li><strong>周邊工程：</strong>市公所正進行周邊人行環境提升計畫(預計10月底完工)，上下學請注意施工安全。</li>
+                    <li><strong>家長會費：</strong>若有兩名以上子女就讀，註冊時統一繳交，事後由高年級學生辦理退費。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Tab 9: 親職教育佳文 (Accordion Style) -->
+        <section id="tab-9" class="tab-content max-w-4xl mx-auto hidden">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-blue-800 border-b-2 border-blue-100 pb-3 mb-6"><i class="fa-solid fa-newspaper mr-2"></i>親職教育佳文</h2>
+                <p class="text-gray-500 mb-6"><i class="fa-solid fa-hand-pointer mr-1"></i> 點擊下方標題展開文章閱讀</p>
+                
+                <div class="space-y-4" id="articles-container">
+                    
+                    <!-- Article 1 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(1)">
+                            <h3 class="text-lg font-bold text-gray-800">1. 洪蘭：比分數更重要的事</h3>
+                            <i id="icon-acc-1" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-1" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed indent-8 border-t border-gray-100">
+                                <p class="mb-4">一位朋友的女兒想來台灣自助旅行。朋友寫信請我就近照顧一下，因為辛蒂才十七歲，尚未成年，她有些擔心。</p>
+                                <p class="mb-4">辛蒂抵達後，第二天一早，悄悄起床，幫我把廚房和廁所洗得乾乾淨淨，還去外面把陽台也掃了。我很驚訝，她說：「有時差，睡不著，而且做這點小事不花什麼力氣，」又說：「力氣是最用不完的，睡一覺明天又有了。從小到大，我媽總是告訴我看到事情就去做，不要管是誰的，因為只有從做中才能真正學到東西。」我想起她母親也是研究神經的，不禁點頭。</p>
+                                <p class="mb-4">的確，在實驗上看到經驗是促使神經連接最好的方式。神經的迴路經過反覆練習，連接得又密又緊... (中略) 所以古人說「熟能生巧」，父母應該放手讓孩子去做，因為孩子需要經驗來幫助神經連接以強化學習。</p>
+                                <p class="mb-4">因為辛蒂很有禮貌，我就介紹她去台中的好友家住。沒想到，台中的朋友也很喜歡辛蒂主動做事的態度... 朋友的兒子本來渾渾噩噩，跟辛蒂談了兩晚以後振作起來了。</p>
+                                <p class="mb-4">辛蒂告訴他，人生除了考試，還有很多更重要的事。「你在生活中，已經開始替自己蒐集未來可用的資料，累積未來可用的人脈和經驗。你如果現在還沒想，將來怎麼去和別人競爭？...天下只有自己的母親會容忍你的壞習慣，別人是沒有義務的。」</p>
+                                <p>孩子真是要教，因為「有禮天下去得」。父母要把眼光放遠一點，不要計較現在的一分、兩分。孩子的未來不在這些分數上，是在他的人格和情操上，那才是我們教育的重點。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article 2 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(2)">
+                            <h3 class="text-lg font-bold text-gray-800">2. 5個方法，教孩子優雅面對輸贏</h3>
+                            <i id="icon-acc-2" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-2" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed border-t border-gray-100">
+                                <p class="text-sm text-gray-500 mb-4">作者：曾多聞 (親子天下)</p>
+                                <p class="mb-4">很多人不喜歡比較，尤其不贊成拿孩子來比較。但競爭也是成長的一部分。社會學家弗里德曼給家長5個訣竅，教孩子優雅的面對輸贏：</p>
+                                <ol class="list-decimal ml-5 space-y-3">
+                                    <li><strong>提早讓孩子學習競爭：</strong>不要怕讓孩子參與競賽。輸贏也是需要練習的，經過練習，孩子會漸漸明白，輸贏無關個人。</li>
+                                    <li><strong>鼓勵孩子欣賞對手：</strong>培養運動家精神最好的方法，就是言教身教並重。讚美對手的表現，孩子會模仿父母的言行。</li>
+                                    <li><strong>找出孩子的強項：</strong>讓孩子有機會參加個人與團體比賽，隨著長大，他們更能體會團體合作的重要。</li>
+                                    <li><strong>不要太過保護孩子：</strong>沒有「輸」過的孩子，不會懂「贏」的滋味。但父母也不要太積極參與孩子的賽事，施加不切實際的壓力。</li>
+                                    <li><strong>讓孩子享受比賽過程：</strong>家長很容易落入太在乎輸贏的陷阱。競賽最大的好處，是讓孩子培養社會技能與結交同好。</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article 3 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(3)">
+                            <h3 class="text-lg font-bold text-gray-800">3. 五招收服孩子愛頂嘴</h3>
+                            <i id="icon-acc-3" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-3" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed border-t border-gray-100">
+                                <p class="text-sm text-gray-500 mb-4">作者：楊俐容 (親子天下)</p>
+                                <p class="mb-4 indent-8">青少年愛頂嘴，常常是因為父母無法調整關愛；沒能順利轉型，就會嘮叨，孩子也會長不好。至於如何轉型？我提五招供大家參考：</p>
+                                <ul class="space-y-4">
+                                    <li><strong>第一，體認「嘮叨其實為自己」：</strong>表達關愛，一次就夠了；一直講，是希望孩子聽你的。只要不至於產生嚴重後果的決定，表達關懷後尊重他的自主。</li>
+                                    <li><strong>第二，默唸「孩子獨立真可喜」：</strong>他在這個關卡願意嘗試追求獨立，將來才有辦法真的作主。</li>
+                                    <li><strong>第三，宣布「習慣調整慢慢來」：</strong>坦誠告訴孩子父母需要時間適應放手。父母只要能坦承，青少年其實還是很能包容父母的。</li>
+                                    <li><strong>第四，牢記「有效規範的三要」：</strong>(1)以行動取代嘮叨；(2)善用客觀事實資訊；(3)使用自然合理的行為後果。讓「自然的後果」去教他。</li>
+                                    <li><strong>第五，切記「親子對談有四不」：</strong>(1)小事不要一提再提；(2)不要翻舊帳；(3)不要否定孩子；(4)不要引發孩子的罪惡感。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article 4 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(4)">
+                            <h3 class="text-lg font-bold text-gray-800">4. 別害怕「評估」，怕的是「錯過」</h3>
+                            <i id="icon-acc-4" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-4" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed indent-8 border-t border-gray-100">
+                                <p class="text-sm text-gray-500 mb-4 indent-0">作者：何翩翩 (親子天下)</p>
+                                <p class="mb-4">在要不要評估之間存有太多的模糊地帶... 大人到底知不知道孩子的困境？過動兒的衝動需要多方協助；亞斯孩子固執是天生缺乏彈性。</p>
+                                <p class="mb-4">「評估就像是身體健康檢查，讓我們更了解認識孩子，能夠對症下藥，用最好的資源幫助他，我們從來沒有想過被定型這個問題，因為我們更害怕的是被『錯過』」。</p>
+                                <p class="mb-4">隱蔽孩子的需要，也斷絕了資源。吳佑佑醫師曾說過：「標籤不用人家貼，而是孩子一來就掛在身上的」，這些孩子需要別人的寬容，並用不同的標準與方式相處，隱蔽他的需要只是在斷絕他的資源，更會造成老師的困擾。</p>
+                                <p>當孩子需要評估時，請不要逃避，幫助孩子和我們更認識他，如果你可以因此放低一些標準，同理他的需求與不足，對孩子來說也許才是最大的幫助。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article 5 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(5)">
+                            <h3 class="text-lg font-bold text-gray-800">5. 青少年交友不當，父母該怎麼和孩子討論？</h3>
+                            <i id="icon-acc-5" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-5" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed indent-8 border-t border-gray-100">
+                                <p class="text-sm text-gray-500 mb-4 indent-0">作者：黃敦晴 (親子天下)</p>
+                                <p class="mb-4">父母擔心孩子交不到朋友，但更擔心他們交到壞朋友！如果懷疑孩子交的是損友，與其突然下禁令，不如先用好奇的態度多探詢。先抽離自己的情緒，跟孩子說明對方有哪些不當的行為、事實，讓你擔心，以免孩子覺得父母想操控他們而反彈。</p>
+                                <p class="mb-4">當確定孩子真的交了壞朋友時，先不要責備他們，孩子才會願意持續對話。可以鼓勵孩子擴大社交生活認識新朋友。若孩子仍然沒有與壞朋友拉開距離，父母就要採取更激烈的行動，中止他們來往（例如轉學）。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Article 6 -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-blue-50 focus:outline-none flex justify-between items-center transition-colors" onclick="toggleAccordion(6)">
+                            <h3 class="text-lg font-bold text-gray-800">6. 網路成癮不是罪，是孩子求助的警訊</h3>
+                            <i id="icon-acc-6" class="fa-solid fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                        </button>
+                        <div id="acc-6" class="accordion-content bg-white">
+                            <div class="p-6 text-gray-700 leading-relaxed indent-8 border-t border-gray-100">
+                                <p class="text-sm text-gray-500 mb-4 indent-0">作者：王智弘 (親子天下)</p>
+                                <p class="mb-4">網路成癮症狀有積極的警訊意義，背後代表的危險因子更值得重視。成癮的定義是「無法控制、功能失常」。</p>
+                                <p class="mb-4">重度使用者和網路成癮者的差別在於背後的「心理危險因子」，包括社交焦慮、憂鬱、無聊感、低自尊、家庭關係不佳等才是成癮主因。網路成癮最大的問題，其實是「人際關係有問題」。有良好的人際關係連結與實體社會活動參與的孩子，即使是網路重度使用者，也不太會變成網路成癮。</p>
+                                <p>因此，父母要防範孩子網路成癮，「親子關係」是成功關鍵。試著對話、建立關係，了解孩子的網路世界，幫助孩子與現實生活連結，成癮風險自然就會降低。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-400 text-sm py-8 mt-4">
+            &copy; 115 南投縣立南投國民中學. All rights reserved.
+        </footer>
+
+    </main>
+
+    <script>
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('animate-fade-in');
+            });
+            
+            // Show target tab
+            const target = document.getElementById(tabId);
+            target.classList.remove('hidden');
+            // Slight delay to trigger CSS animation
+            setTimeout(() => target.classList.add('animate-fade-in'), 10);
+            
+            // Update sidebar active states
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
+                el.classList.add('text-gray-600');
+            });
+            
+            const activeNavs = document.querySelectorAll(`.nav-link[data-target="${tabId}"]`);
+            activeNavs.forEach(el => {
+                el.classList.remove('text-gray-600');
+                el.classList.add('bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
+            });
+
+            // Scroll to top of main content
+            document.getElementById('main-content').scrollTop = 0;
+
+            // Close mobile menu if open
+            if (window.innerWidth < 768) {
+                toggleMobileMenu();
+            }
+        }
+
+        // Mobile Menu Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        let isMobileMenuOpen = false;
+
+        function toggleMobileMenu() {
+            isMobileMenuOpen = !isMobileMenuOpen;
+            if (isMobileMenuOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+                mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+            }
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Accordion Logic for Articles
+        function toggleAccordion(id) {
+            const content = document.getElementById(`acc-${id}`);
+            const icon = document.getElementById(`icon-acc-${id}`);
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                icon.classList.remove('rotate-180');
+            } else {
+                // Optional: Close others
+                // document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('open'));
+                // document.querySelectorAll('[id^="icon-acc-"]').forEach(el => el.classList.remove('rotate-180'));
+                
+                content.classList.add('open');
+                icon.classList.add('rotate-180');
+            }
+        }
+
+        // Add simple fade-in animation via Tailwind config in style tag or just raw CSS
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .animate-fade-in {
+                animation: fadeIn 0.4s ease-in-out;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize first tab selection visually
+        document.querySelector(`.nav-link[data-target="tab-home"]`).classList.add('bg-blue-50', 'text-blue-700', 'font-bold', 'border-r-4', 'border-blue-600');
+    </script>
+</body>
+</html>
